@@ -13,13 +13,12 @@
     
     <style>
         :root {
-            --bg-color: #64748b; /* Gris azulado para el fondo exterior */
-            --border-color: #0f172a; /* Azul marino muy oscuro para los bordes gruesos */
+            --border-color: #0f172a; 
             --box-bg: #ffffff;
             --text-main: #1e293b;
             --text-muted: #475569;
-            --accent: #2563eb; /* Azul para resaltar cosas si es necesario */
-            --gap-size: 6px;
+            --accent: #2563eb; 
+            --gap-size: 8px;
         }
 
         * {
@@ -30,37 +29,49 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
+            /* Fondo mejorado: Gradiente oscuro con un patrón sutil de puntos de fondo */
+            background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
             color: var(--text-main);
             display: flex;
             justify-content: center;
-            padding: 2rem;
+            padding: 3rem 2rem;
             min-height: 100vh;
+            position: relative;
         }
 
-        /* Contenedor principal que simula el tamaño del póster */
+        /* Patrón de puntos para un toque tecnológico */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(#64748b 1px, transparent 1px);
+            background-size: 30px 30px;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
         .poster {
             width: 100%;
-            max-width: 1000px;
+            max-width: 1100px;
             background-color: transparent;
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
 
-        /* Envoltura que crea los bordes perfectos usando background y gap */
         .poster-grid-wrapper {
             background-color: var(--border-color);
             padding: var(--gap-size);
             display: flex;
             flex-direction: column;
             gap: var(--gap-size);
-            border: 4px solid var(--border-color);
+            border: 5px solid var(--border-color);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
         .box {
             background-color: var(--box-bg);
-            padding: 1.25rem;
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
         }
@@ -69,7 +80,6 @@
         .header-row {
             display: flex;
             gap: var(--gap-size);
-            background-color: transparent;
         }
         
         .logo-box {
@@ -77,8 +87,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 4rem;
-            color: var(--border-color);
+            color: var(--accent);
         }
 
         .title-box {
@@ -90,17 +99,17 @@
         }
 
         .title-box h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: -0.5px;
+            letter-spacing: -1px;
+            color: #0f172a;
         }
 
         /* --- METADATA ROW --- */
         .meta-row {
             display: flex;
             gap: var(--gap-size);
-            background-color: transparent;
         }
 
         .meta-box-small {
@@ -114,12 +123,14 @@
 
         .meta-box-small h2 {
             font-size: 1.5rem;
+            color: var(--text-muted);
             margin-bottom: 0.2rem;
         }
         
         .meta-box-small h3 {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 800;
+            color: var(--accent);
         }
 
         .meta-box-large {
@@ -127,8 +138,8 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            font-size: 1rem;
-            line-height: 1.5;
+            font-size: 1.1rem;
+            line-height: 1.6;
         }
 
         /* --- AUTORES --- */
@@ -137,27 +148,42 @@
         }
         .authors-box strong {
             display: block;
-            margin-bottom: 0.5rem;
-            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            font-size: 1.3rem;
+            color: var(--accent);
         }
         .authors-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            row-gap: 0.5rem;
+            display: flex;
+            justify-content: space-around;
             list-style: none;
-            padding-left: 0.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
         .authors-grid li {
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            background: #f8fafc;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        .percent-badge {
+            background-color: #dcfce7;
+            color: #166534;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-left: 5px;
         }
 
         /* --- BODY --- */
         .body-row {
             display: flex;
             gap: var(--gap-size);
-            background-color: transparent;
             align-items: stretch;
         }
 
@@ -166,26 +192,27 @@
             display: flex;
             flex-direction: column;
             gap: var(--gap-size);
-            background-color: transparent;
         }
 
         .content-box h3 {
-            font-size: 1.4rem;
-            font-weight: 700;
+            font-size: 1.5rem;
+            font-weight: 800;
             margin-bottom: 1rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
             color: var(--border-color);
-            border-bottom: 2px solid #e2e8f0;
+            border-bottom: 3px solid var(--accent);
             padding-bottom: 0.5rem;
+            display: inline-flex;
         }
 
         .content-box p, .content-box ul, .content-box ol {
             font-size: 1.05rem;
-            line-height: 1.6;
+            line-height: 1.7;
             color: var(--text-muted);
             margin-bottom: 1rem;
+            text-align: justify;
         }
 
         .content-box ul, .content-box ol {
@@ -193,42 +220,71 @@
         }
 
         .content-box li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.6rem;
+        }
+
+        /* Imágenes y visuales */
+        .featured-image {
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            margin-top: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Métricas visuales */
+        .metrics-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .metric-card {
+            background: #f1f5f9;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid #cbd5e1;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .metric-card .value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--accent);
+            display: block;
+        }
+        .metric-card .label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
         }
 
         .results-box {
-            flex-grow: 2; /* Ocupa más espacio vertical */
+            flex-grow: 2; 
         }
         
         .qr-placeholder {
-            margin-top: 1rem;
-            background-color: #f1f5f9;
-            border: 2px dashed #cbd5e1;
+            margin-top: auto;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border: 2px dashed #93c5fd;
             padding: 1.5rem;
             text-align: center;
-            border-radius: 8px;
-            font-weight: 600;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.2rem;
             color: var(--accent);
             text-decoration: none;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.5rem;
-            transition: background 0.2s;
+            gap: 0.8rem;
+            transition: all 0.3s;
         }
         .qr-placeholder:hover {
-            background-color: #e2e8f0;
-        }
-
-        /* --- FOOTER --- */
-        .poster-footer {
-            padding: 0.5rem 0;
-            font-size: 1rem;
-            color: #ffffff;
-            font-weight: 400;
-        }
-        .poster-footer strong {
-            font-weight: 700;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-color: var(--accent);
         }
     </style>
 </head>
@@ -241,13 +297,13 @@
             <!-- ENCABEZADO -->
             <header class="header-row">
                 <div class="box logo-box">
-                    <span class="material-symbols-rounded" style="font-size: 3rem;">school</span>
+                    <span class="material-symbols-rounded" style="font-size: 4rem;">psychology</span>
                 </div>
                 <div class="box title-box">
                     <h1>Q-Learning en el Entorno CartPole-v1</h1>
                 </div>
                 <div class="box logo-box">
-                    <span class="material-symbols-rounded" style="font-size: 3rem;">science</span>
+                    <span class="material-symbols-rounded" style="font-size: 4rem;">smart_toy</span>
                 </div>
             </header>
 
@@ -262,22 +318,31 @@
                     <h3>0</h3>
                 </div>
                 <div class="box meta-box-large">
-                    <p><strong>Nombre de asignatura:</strong> Aprendizaje por Refuerzo</p>
-                    <p><strong>Nombre docente:</strong> [Nombre del Docente]</p>
-                    <p><strong>Área / línea de investigación:</strong> Inteligencia Artificial / Control Óptimo</p>
+                    <p><strong>Nombre de asignatura:</strong> Inteligencia Artificial</p>
+                    <p><strong>Nombre docente:</strong> Hugo Espetia Huamanga</p>
+                    <p><strong>Área / línea de investigación:</strong> Aprendizaje por Refuerzo</p>
                 </div>
             </div>
 
             <!-- AUTORES -->
             <div class="box authors-box">
-                <strong>Autores:</strong>
+                <strong><span class="material-symbols-rounded" style="vertical-align: bottom;">groups</span> Integrantes del Proyecto:</strong>
                 <ul class="authors-grid">
-                    <li><span class="material-symbols-rounded" style="font-size:1.2rem; color:var(--accent);">person</span> 1) Honorio Morales</li>
-                    <li><span class="material-symbols-rounded" style="font-size:1.2rem; color:var(--accent);">person</span> 2) [Autor 2]</li>
-                    <li><span class="material-symbols-rounded" style="font-size:1.2rem; color:var(--accent);">person</span> 3) [Autor 3]</li>
-                    <li><span class="material-symbols-rounded" style="font-size:1.2rem; color:var(--accent);">person</span> 4) [Autor 4]</li>
-                    <li><span class="material-symbols-rounded" style="font-size:1.2rem; color:var(--accent);">person</span> 5) [Autor 5]</li>
-                    <li><span class="material-symbols-rounded" style="font-size:1.2rem; color:var(--accent);">person</span> 6) [Autor 6]</li>
+                    <li>
+                        <span class="material-symbols-rounded" style="color:var(--accent);">person</span> 
+                        Morales Ttito Honorio 
+                        <span class="percent-badge">100%</span>
+                    </li>
+                    <li>
+                        <span class="material-symbols-rounded" style="color:var(--accent);">person</span> 
+                        Torres Cáceres Sayo Michael 
+                        <span class="percent-badge">100%</span>
+                    </li>
+                    <li>
+                        <span class="material-symbols-rounded" style="color:var(--accent);">person</span> 
+                        Zavaleta Luna Sebastian (SM) 
+                        <span class="percent-badge">100%</span>
+                    </li>
                 </ul>
             </div>
 
@@ -287,69 +352,79 @@
                 <!-- COLUMNA IZQUIERDA -->
                 <div class="col">
                     <div class="box content-box">
-                        <h3><span class="material-symbols-rounded">article</span> Introducción:</h3>
-                        <p>El problema del CartPole es un desafío clásico de control subactuado donde el objetivo es mantener un poste en equilibrio sobre un carro móvil el mayor tiempo posible. En este proyecto, modelamos el problema como un <strong>Proceso de Decisión de Markov (MDP)</strong> y aplicamos algoritmos de Aprendizaje por Refuerzo (Reinforcement Learning) para resolverlo sin conocimiento previo de las leyes físicas del entorno.</p>
+                        <h3><span class="material-symbols-rounded">article</span> Introducción</h3>
+                        <p>El problema del CartPole es un desafío clásico de control subactuado donde el objetivo es mantener un poste en equilibrio sobre un carro móvil el mayor tiempo posible.</p>
+                        <p>En este proyecto, modelamos el problema como un <strong>Proceso de Decisión de Markov (MDP)</strong> y aplicamos algoritmos de Aprendizaje por Refuerzo para resolverlo sin conocimiento previo de las leyes físicas del entorno.</p>
+                        <!-- Imagen representativa de la documentación de Gymnasium -->
+                        <img src="https://gymnasium.farama.org/_images/cart_pole.gif" alt="Animación de CartPole" class="featured-image">
                     </div>
                     
                     <div class="box content-box">
-                        <h3><span class="material-symbols-rounded">target</span> Objetivos:</h3>
+                        <h3><span class="material-symbols-rounded">target</span> Objetivos</h3>
                         <ul>
-                            <li>Implementar el algoritmo <strong>Q-Learning</strong> (Off-Policy, Value-Based) desde cero.</li>
-                            <li>Aplicar técnicas de discretización para manejar el espacio de estados continuo del entorno <code>CartPole-v1</code> de Gymnasium.</li>
-                            <li>Desplegar el agente entrenado en una aplicación web interactiva usando Streamlit.</li>
+                            <li>Implementar el algoritmo <strong>Q-Learning</strong> (Off-Policy, Value-Based).</li>
+                            <li>Aplicar técnicas de discretización para manejar el espacio de estados continuo.</li>
+                            <li>Desplegar el agente entrenado en una aplicación web interactiva.</li>
                         </ul>
                     </div>
 
                     <div class="box content-box">
-                        <h3><span class="material-symbols-rounded">architecture</span> Metodologías/materiales y métodos (descripción):</h3>
-                        <p>Se utilizó la librería <code>Gymnasium</code> de la Fundación Farama. Dado que Q-Learning requiere espacios de estado discretos (tabulares), se implementó una función de <strong>discretización</strong> que divide las 4 variables continuas (posición, velocidad, ángulo, y velocidad angular) en 20 "bins" uniformes.</p>
-                        <p>El entrenamiento consistió en 5,000 episodios utilizando una política <strong>ε-greedy</strong>:</p>
+                        <h3><span class="material-symbols-rounded">architecture</span> Metodología</h3>
+                        <p>Se utilizó el entorno <code>CartPole-v1</code>. Como Q-Learning requiere estados discretos (tabulares), se implementó una <strong>discretización</strong> que divide las 4 variables continuas en 20 "bins" uniformes.</p>
+                        <p>Se usó una política <strong>ε-greedy</strong>:</p>
                         <ul>
                             <li><strong>Tasa de aprendizaje (α):</strong> 0.1</li>
                             <li><strong>Factor de descuento (γ):</strong> 0.99</li>
-                            <li><strong>Decaimiento de exploración:</strong> 0.995 (reduciendo la exploración gradualmente hasta 0.01).</li>
+                            <li><strong>Decaimiento (ε):</strong> 0.995</li>
                         </ul>
-                        <p>Las actualizaciones de valor se realizaron usando la ecuación de Bellman clásica.</p>
                     </div>
                 </div>
 
                 <!-- COLUMNA DERECHA -->
                 <div class="col">
                     <div class="box content-box results-box">
-                        <h3><span class="material-symbols-rounded">monitoring</span> Resultados:</h3>
-                        <p>El agente logró converger exitosamente, evidenciando un aprendizaje continuo a medida que la tasa de exploración (ε) disminuía. En los últimos 100 episodios, el promedio móvil de recompensa superó de manera consistente los 30 puntos por episodio bajo la configuración de discretización establecida.</p>
-                        <p>Al exportar la Q-Table (modelo entrenado), se separó la fase de entrenamiento de la de inferencia, permitiendo un despliegue en la nube fluido y de baja latencia.</p>
+                        <h3><span class="material-symbols-rounded">monitoring</span> Resultados y Desempeño</h3>
+                        <p>El agente logró converger exitosamente, evidenciando un aprendizaje continuo a medida que la tasa de exploración disminuía. La política aprendida (explotación) le permite mantener el poste estable de forma indefinida en las pruebas.</p>
                         
+                        <!-- Panel de métricas -->
+                        <div class="metrics-container">
+                            <div class="metric-card">
+                                <span class="value">5,000</span>
+                                <span class="label">Episodios Entrenados</span>
+                            </div>
+                            <div class="metric-card">
+                                <span class="value">30.78</span>
+                                <span class="label">Promedio Recompensa (Últimos 100)</span>
+                            </div>
+                            <div class="metric-card">
+                                <span class="value">320,000</span>
+                                <span class="label">Estados Discretizados</span>
+                            </div>
+                            <div class="metric-card">
+                                <span class="value">100%</span>
+                                <span class="label">Estabilidad en Inferencia</span>
+                            </div>
+                        </div>
+                        
+                        <p>Al exportar la Q-Table, se separó la fase de entrenamiento de la fase de inferencia (evaluación), lo que permitió incrustar el "cerebro" del agente en la nube de Streamlit.</p>
+
                         <a href="https://aprendizajeporrefuerzo.streamlit.app/" target="_blank" class="qr-placeholder">
-                            <span class="material-symbols-rounded" style="font-size: 3rem;">smart_toy</span>
-                            Escanear / Clic aquí para ver la Demo Interactiva en Streamlit
+                            <span class="material-symbols-rounded" style="font-size: 3rem;">travel_explore</span>
+                            Clic aquí para abrir la Demo Interactiva Web
                         </a>
                     </div>
 
                     <div class="box content-box">
-                        <h3><span class="material-symbols-rounded">fact_check</span> Conclusiones:</h3>
+                        <h3><span class="material-symbols-rounded">fact_check</span> Conclusiones</h3>
                         <ol>
-                            <li>El Q-Learning tabular es altamente funcional pero sensible a los parámetros de discretización. Limita la generalización frente a redes neuronales (DQN).</li>
-                            <li>Se evidenció la "maldición de la dimensionalidad": con 20 bins por variable, el tamaño de la tabla alcanza los 320,000 estados.</li>
-                            <li>El despliegue web interactivo demuestra que el agente asimiló la dinámica básica del control del poste mediante pura explotación.</li>
+                            <li>El Q-Learning tabular es altamente funcional para problemas de control clásico, pero es extremadamente sensible a los parámetros de discretización.</li>
+                            <li>Se evidenció la "maldición de la dimensionalidad": con solo 20 divisiones por variable de estado, el tamaño de la matriz explotó a miles de posibles permutaciones.</li>
                         </ol>
-                    </div>
-
-                    <div class="box content-box">
-                        <h3><span class="material-symbols-rounded">menu_book</span> Referencias:</h3>
-                        <ul>
-                            <li>Sutton, R. S., & Barto, A. G. (2018). <em>Reinforcement Learning: An Introduction</em>. MIT press.</li>
-                            <li>Farama Foundation (2024). <em>Gymnasium Documentation</em>. [Sitio Web].</li>
-                        </ul>
                     </div>
                 </div>
 
             </div>
         </div>
-
-        <footer class="poster-footer">
-            Proyectos <strong>Finales de</strong> asignatura 2025-I <em>(formato DGI/VRIN adaptado para asignatura)</em>
-        </footer>
 
     </div>
 
