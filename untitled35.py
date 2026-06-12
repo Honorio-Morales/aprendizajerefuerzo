@@ -26,7 +26,7 @@ Original file is located at
 Primero instalamos `gymnasium` para acceder al entorno de CartPole.
 """
 
-!pip install gymnasium numpy matplotlib
+# !pip install gymnasium numpy matplotlib
 
 """## A. DEFINICIÓN DEL ENTORNO (MDP)
 
@@ -89,7 +89,7 @@ plt.title("Decaimiento de Epsilon")
 plt.xlabel("Episodio")
 plt.ylabel("Epsilon")
 plt.grid(True, alpha=0.3)
-plt.show()
+# plt.show() # Comentado para automatizar el entrenamiento
 
 """## C. SIMULACIÓN PRÁCTICA CON GYMNASIUM
 
@@ -204,7 +204,7 @@ ax2.set_ylabel("Valor de Epsilon")
 ax2.legend()
 
 plt.tight_layout()
-plt.show()
+# plt.show() # Comentado para automatizar el entrenamiento
 
 # Estadísticas finales
 ultimos_100 = reward_history[-100:]
@@ -213,6 +213,10 @@ print(f"Promedio: {np.mean(ultimos_100):.2f}")
 print(f"Máximo: {np.max(ultimos_100)}")
 print(f"Mínimo: {np.min(ultimos_100)}")
 print(f"Desviación Estándar: {np.std(ultimos_100):.2f}")
+
+print("\nGuardando la Q-Table...")
+np.save('q_table.npy', q_table)
+print("¡q_table.npy guardada con éxito!")
 
 """## E. PREPARACIÓN PARA DESPLIEGUE (STREAMLIT)
 
