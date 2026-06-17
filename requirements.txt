@@ -1,4 +1,7 @@
 gymnasium
+pygame-ce
+torch
 numpy
 matplotlib
 streamlit
+setuptools
