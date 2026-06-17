@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Póster - CartPole Q-Learning</title>
-    <!-- Google Fonts: Inter -->
+    <title>Póster - CartPole Q-Learning, DQN & SARSA</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <!-- Google Material Symbols (SVG Icons) -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
     
     <style>
@@ -17,19 +15,16 @@
             --box-bg: #ffffff;
             --text-main: #1e293b;
             --text-muted: #475569;
-            --accent: #2563eb; 
+            --accent: #2563eb;
+            --accent-dqn: #7c3aed;
+            --accent-sarsa: #059669;
             --gap-size: 8px;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Inter', sans-serif;
-            /* Fondo mejorado: Gradiente oscuro con un patrón sutil de puntos de fondo */
             background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
             color: var(--text-main);
             display: flex;
@@ -39,7 +34,6 @@
             position: relative;
         }
 
-        /* Patrón de puntos para un toque tecnológico */
         body::before {
             content: "";
             position: absolute;
@@ -77,10 +71,7 @@
         }
 
         /* --- HEADER --- */
-        .header-row {
-            display: flex;
-            gap: var(--gap-size);
-        }
+        .header-row { display: flex; gap: var(--gap-size); }
         
         .logo-box {
             flex: 1;
@@ -99,7 +90,7 @@
         }
 
         .title-box h1 {
-            font-size: 2.8rem;
+            font-size: 2.4rem;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: -1px;
@@ -107,10 +98,7 @@
         }
 
         /* --- METADATA ROW --- */
-        .meta-row {
-            display: flex;
-            gap: var(--gap-size);
-        }
+        .meta-row { display: flex; gap: var(--gap-size); }
 
         .meta-box-small {
             flex: 1;
@@ -121,17 +109,8 @@
             text-align: center;
         }
 
-        .meta-box-small h2 {
-            font-size: 1.5rem;
-            color: var(--text-muted);
-            margin-bottom: 0.2rem;
-        }
-        
-        .meta-box-small h3 {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: var(--accent);
-        }
+        .meta-box-small h2 { font-size: 1.5rem; color: var(--text-muted); margin-bottom: 0.2rem; }
+        .meta-box-small h3 { font-size: 2.2rem; font-weight: 800; color: var(--accent); }
 
         .meta-box-large {
             flex: 3;
@@ -143,15 +122,8 @@
         }
 
         /* --- AUTORES --- */
-        .authors-box {
-            font-size: 1.1rem;
-        }
-        .authors-box strong {
-            display: block;
-            margin-bottom: 0.8rem;
-            font-size: 1.3rem;
-            color: var(--accent);
-        }
+        .authors-box { font-size: 1.1rem; }
+        .authors-box strong { display: block; margin-bottom: 0.8rem; font-size: 1.3rem; color: var(--accent); }
         .authors-grid {
             display: flex;
             justify-content: space-around;
@@ -187,12 +159,7 @@
             align-items: stretch;
         }
 
-        .col {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: var(--gap-size);
-        }
+        .col { flex: 1; display: flex; flex-direction: column; gap: var(--gap-size); }
 
         .content-box h3 {
             font-size: 1.5rem;
@@ -215,15 +182,9 @@
             text-align: justify;
         }
 
-        .content-box ul, .content-box ol {
-            padding-left: 1.5rem;
-        }
+        .content-box ul, .content-box ol { padding-left: 1.5rem; }
+        .content-box li { margin-bottom: 0.6rem; }
 
-        .content-box li {
-            margin-bottom: 0.6rem;
-        }
-
-        /* Imágenes y visuales */
         .featured-image {
             width: 100%;
             border-radius: 8px;
@@ -232,7 +193,7 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
-        /* Métricas visuales */
+        /* Métricas */
         .metrics-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -247,23 +208,14 @@
             border: 1px solid #cbd5e1;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
         }
-        .metric-card .value {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: var(--accent);
-            display: block;
-        }
-        .metric-card .label {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #64748b;
-            text-transform: uppercase;
-        }
+        .metric-card .value { font-size: 2.2rem; font-weight: 800; color: var(--accent); display: block; }
+        .metric-card .label { font-size: 0.9rem; font-weight: 600; color: #64748b; text-transform: uppercase; }
 
-        .results-box {
-            flex-grow: 2; 
-        }
-        
+        .metric-card.dqn .value { color: var(--accent-dqn); }
+        .metric-card.sarsa .value { color: var(--accent-sarsa); }
+
+        .results-box { flex-grow: 2; }
+
         .qr-placeholder {
             margin-top: auto;
             background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
@@ -286,147 +238,567 @@
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
             border-color: var(--accent);
         }
+
+        /* =============================================
+           NUEVAS SECCIONES: DQN y SARSA
+           ============================================= */
+
+        /* Separador de sección con label */
+        .section-divider {
+            display: flex;
+            align-items: center;
+            gap: var(--gap-size);
+        }
+        .section-divider-label {
+            white-space: nowrap;
+            background-color: var(--border-color);
+            color: #fff;
+            font-weight: 800;
+            font-size: 1.1rem;
+            padding: 0.6rem 1.4rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+        .section-divider-label.dqn { background-color: var(--accent-dqn); }
+        .section-divider-label.sarsa { background-color: var(--accent-sarsa); }
+
+        /* Cabecera de algoritmo (banner de color) */
+        .algo-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.2rem 1.5rem;
+        }
+        .algo-header.dqn { background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%); border-left: 6px solid var(--accent-dqn); }
+        .algo-header.sarsa { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-left: 6px solid var(--accent-sarsa); }
+
+        .algo-header h2 { font-size: 1.8rem; font-weight: 800; }
+        .algo-header.dqn h2 { color: var(--accent-dqn); }
+        .algo-header.sarsa h2 { color: var(--accent-sarsa); }
+
+        .algo-header p { font-size: 1rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+        .algo-badge {
+            margin-left: auto;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+        .badge-dqn { background: #7c3aed; color: #fff; }
+        .badge-sarsa { background: #059669; color: #fff; }
+
+        /* Títulos de secciones internas coloreados */
+        .content-box.dqn h3 { border-bottom-color: var(--accent-dqn); }
+        .content-box.sarsa h3 { border-bottom-color: var(--accent-sarsa); }
+
+        /* Tabla comparativa final */
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+        .compare-table th {
+            padding: 0.7rem 1rem;
+            text-align: left;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .compare-table th:first-child { background: #1e293b; color: #fff; }
+        .compare-table th.col-ql { background: #dbeafe; color: var(--accent); }
+        .compare-table th.col-dqn { background: #ede9fe; color: var(--accent-dqn); }
+        .compare-table th.col-sarsa { background: #d1fae5; color: var(--accent-sarsa); }
+
+        .compare-table td {
+            padding: 0.65rem 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            color: var(--text-muted);
+            vertical-align: top;
+        }
+        .compare-table tr:last-child td { border-bottom: none; }
+        .compare-table tr:nth-child(even) td { background: #f8fafc; }
+        .compare-table td:first-child { font-weight: 700; color: var(--text-main); background: #f1f5f9 !important; }
+
+        /* Tag chips */
+        .tag-chip {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            margin-right: 4px;
+        }
+        .chip-blue { background: #dbeafe; color: #1d4ed8; }
+        .chip-purple { background: #ede9fe; color: #6d28d9; }
+        .chip-green { background: #d1fae5; color: #065f46; }
+
+        /* Arquitectura DQN visual */
+        .arch-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        .arch-node {
+            background: #f1f5f9;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 0.5rem 0.8rem;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .arch-node.input { border-color: var(--accent); background: #eff6ff; color: var(--accent); }
+        .arch-node.hidden { border-color: var(--accent-dqn); background: #f5f3ff; color: var(--accent-dqn); }
+        .arch-node.output { border-color: #f59e0b; background: #fffbeb; color: #b45309; }
+        .arch-arrow { font-size: 1.2rem; color: #94a3b8; }
+
+        /* Fórmula matemática */
+        .formula-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 0.8rem 1.2rem;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            color: var(--text-main);
+            text-align: center;
+            margin: 0.8rem 0;
+            font-weight: 600;
+        }
+        .formula-box.dqn { border-left: 4px solid var(--accent-dqn); }
+        .formula-box.sarsa { border-left: 4px solid var(--accent-sarsa); }
+
+        /* Hiperparámetros lista horizontal */
+        .hparam-row {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin: 0.6rem 0;
+        }
+        .hparam {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 0.35rem 0.8rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .hparam span { color: var(--accent); }
+        .hparam.dqn span { color: var(--accent-dqn); }
+        .hparam.sarsa span { color: var(--accent-sarsa); }
+
+        code {
+            background: #f1f5f9;
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-size: 0.92em;
+            font-family: 'Courier New', monospace;
+            color: #1e293b;
+        }
     </style>
 </head>
 <body>
 
-    <div class="poster">
-        
-        <div class="poster-grid-wrapper">
-            
-            <!-- ENCABEZADO -->
-            <header class="header-row">
-                <div class="box logo-box">
-                    <span class="material-symbols-rounded" style="font-size: 4rem;">psychology</span>
-                </div>
-                <div class="box title-box">
-                    <h1>Q-Learning en el Entorno CartPole-v1</h1>
-                </div>
-                <div class="box logo-box">
-                    <span class="material-symbols-rounded" style="font-size: 4rem;">smart_toy</span>
-                </div>
-            </header>
+<div class="poster">
+    <div class="poster-grid-wrapper">
 
-            <!-- METADATOS -->
-            <div class="meta-row">
-                <div class="box meta-box-small">
-                    <h2>Código</h2>
-                    <h3>-</h3>
-                </div>
-                <div class="box meta-box-small">
-                    <h2>Nivel</h2>
-                    <h3>0</h3>
-                </div>
-                <div class="box meta-box-large">
-                    <p><strong>Nombre de asignatura:</strong> Inteligencia Artificial</p>
-                    <p><strong>Nombre docente:</strong> Hugo Espetia Huamanga</p>
-                    <p><strong>Área / línea de investigación:</strong> Aprendizaje por Refuerzo</p>
-                </div>
+        <!-- ══════════════════ ENCABEZADO ══════════════════ -->
+        <header class="header-row">
+            <div class="box logo-box">
+                <span class="material-symbols-rounded" style="font-size: 4rem;">psychology</span>
             </div>
-
-            <!-- AUTORES -->
-            <div class="box authors-box">
-                <strong><span class="material-symbols-rounded" style="vertical-align: bottom;">groups</span> Integrantes del Proyecto:</strong>
-                <ul class="authors-grid">
-                    <li>
-                        <span class="material-symbols-rounded" style="color:var(--accent);">person</span> 
-                        Morales Ttito Honorio 
-                        <span class="percent-badge">100%</span>
-                    </li>
-                    <li>
-                        <span class="material-symbols-rounded" style="color:var(--accent);">person</span> 
-                        Torres Cáceres Sayo Michael 
-                        <span class="percent-badge">100%</span>
-                    </li>
-                    <li>
-                        <span class="material-symbols-rounded" style="color:var(--accent);">person</span> 
-                        Zavaleta Luna Sebastian (SM) 
-                        <span class="percent-badge">100%</span>
-                    </li>
-                </ul>
+            <div class="box title-box">
+                <h1>Aprendizaje por Refuerzo en CartPole-v1 y FrozenLake-v1</h1>
             </div>
+            <div class="box logo-box">
+                <span class="material-symbols-rounded" style="font-size: 4rem;">smart_toy</span>
+            </div>
+        </header>
 
-            <!-- CUERPO PRINCIPAL -->
-            <div class="body-row">
+        <!-- ══════════════════ METADATOS ══════════════════ -->
+        <div class="meta-row">
+            <div class="box meta-box-small">
+                <h2>Código</h2>
+                <h3>-</h3>
+            </div>
+            <div class="box meta-box-small">
+                <h2>Nivel</h2>
+                <h3>0</h3>
+            </div>
+            <div class="box meta-box-large">
+                <p><strong>Nombre de asignatura:</strong> Inteligencia Artificial</p>
+                <p><strong>Nombre docente:</strong> Hugo Espetia Huamanga</p>
+                <p><strong>Área / línea de investigación:</strong> Aprendizaje por Refuerzo</p>
+            </div>
+        </div>
+
+        <!-- ══════════════════ AUTORES ══════════════════ -->
+        <div class="box authors-box">
+            <strong><span class="material-symbols-rounded" style="vertical-align: bottom;">groups</span> Integrantes del Proyecto:</strong>
+            <ul class="authors-grid">
+                <li>
+                    <span class="material-symbols-rounded" style="color:var(--accent);">person</span> 
+                    Morales Ttito Honorio 
+                    <span class="percent-badge">100%</span>
+                </li>
+                <li>
+                    <span class="material-symbols-rounded" style="color:var(--accent);">person</span> 
+                    Torres Cáceres Sayo Michael 
+                    <span class="percent-badge">100%</span>
+                </li>
+                <li>
+                    <span class="material-symbols-rounded" style="color:var(--accent);">person</span> 
+                    Zavaleta Luna Sebastian (SM) 
+                    <span class="percent-badge">100%</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ══════════════════ CUERPO PRINCIPAL — Q-LEARNING ══════════════════ -->
+        <div class="body-row">
+            <!-- COL IZQ -->
+            <div class="col">
+                <div class="box content-box">
+                    <h3><span class="material-symbols-rounded">article</span> Introducción</h3>
+                    <p>Este proyecto abarca tres algoritmos de Aprendizaje por Refuerzo aplicados a entornos clásicos de Gymnasium: <strong>Q-Learning tabular</strong> en CartPole-v1, <strong>Deep Q-Network (DQN)</strong> en CartPole-v1 y <strong>SARSA</strong> en FrozenLake-v1. Todos modelan el problema como un <strong>Proceso de Decisión de Markov (MDP)</strong>.</p>
+                    <img src="https://gymnasium.farama.org/_images/cart_pole.gif" alt="Animación de CartPole" class="featured-image">
+                </div>
                 
-                <!-- COLUMNA IZQUIERDA -->
-                <div class="col">
-                    <div class="box content-box">
-                        <h3><span class="material-symbols-rounded">article</span> Introducción</h3>
-                        <p>El problema del CartPole es un desafío clásico de control subactuado donde el objetivo es mantener un poste en equilibrio sobre un carro móvil el mayor tiempo posible.</p>
-                        <p>En este proyecto, modelamos el problema como un <strong>Proceso de Decisión de Markov (MDP)</strong> y aplicamos algoritmos de Aprendizaje por Refuerzo para resolverlo sin conocimiento previo de las leyes físicas del entorno.</p>
-                        <!-- Imagen representativa de la documentación de Gymnasium -->
-                        <img src="https://gymnasium.farama.org/_images/cart_pole.gif" alt="Animación de CartPole" class="featured-image">
+                <div class="box content-box">
+                    <h3><span class="material-symbols-rounded">target</span> Objetivos</h3>
+                    <ul>
+                        <li>Implementar <strong>Q-Learning</strong> tabular (Off-Policy, Value-Based) con discretización.</li>
+                        <li>Implementar <strong>DQN</strong> con red neuronal profunda y Replay Buffer.</li>
+                        <li>Implementar <strong>SARSA</strong> On-Policy tabular en FrozenLake-v1.</li>
+                        <li>Comparar el comportamiento de los tres algoritmos y desplegar demos interactivas web.</li>
+                    </ul>
+                </div>
+
+                <div class="box content-box">
+                    <h3><span class="material-symbols-rounded">architecture</span> Metodología Q-Learning</h3>
+                    <p>Se usó <code>CartPole-v1</code>. Las 4 variables continuas se discretizaron en 20 "bins" uniformes. Política <strong>ε-greedy</strong>:</p>
+                    <div class="hparam-row">
+                        <div class="hparam">α <span>0.1</span></div>
+                        <div class="hparam">γ <span>0.99</span></div>
+                        <div class="hparam">ε-decay <span>0.995</span></div>
+                        <div class="hparam">Episodios <span>5,000</span></div>
                     </div>
+                </div>
+            </div>
+
+            <!-- COL DER -->
+            <div class="col">
+                <div class="box content-box results-box">
+                    <h3><span class="material-symbols-rounded">monitoring</span> Resultados Q-Learning</h3>
+                    <p>El agente logró convergencia exitosa. La política aprendida le permite mantener el poste estable de forma indefinida en pruebas de inferencia.</p>
                     
-                    <div class="box content-box">
-                        <h3><span class="material-symbols-rounded">target</span> Objetivos</h3>
-                        <ul>
-                            <li>Implementar el algoritmo <strong>Q-Learning</strong> (Off-Policy, Value-Based).</li>
-                            <li>Aplicar técnicas de discretización para manejar el espacio de estados continuo.</li>
-                            <li>Desplegar el agente entrenado en una aplicación web interactiva.</li>
-                        </ul>
-                    </div>
-
-                    <div class="box content-box">
-                        <h3><span class="material-symbols-rounded">architecture</span> Metodología</h3>
-                        <p>Se utilizó el entorno <code>CartPole-v1</code>. Como Q-Learning requiere estados discretos (tabulares), se implementó una <strong>discretización</strong> que divide las 4 variables continuas en 20 "bins" uniformes.</p>
-                        <p>Se usó una política <strong>ε-greedy</strong>:</p>
-                        <ul>
-                            <li><strong>Tasa de aprendizaje (α):</strong> 0.1</li>
-                            <li><strong>Factor de descuento (γ):</strong> 0.99</li>
-                            <li><strong>Decaimiento (ε):</strong> 0.995</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- COLUMNA DERECHA -->
-                <div class="col">
-                    <div class="box content-box results-box">
-                        <h3><span class="material-symbols-rounded">monitoring</span> Resultados y Desempeño</h3>
-                        <p>El agente logró converger exitosamente, evidenciando un aprendizaje continuo a medida que la tasa de exploración disminuía. La política aprendida (explotación) le permite mantener el poste estable de forma indefinida en las pruebas.</p>
-                        
-                        <!-- Panel de métricas -->
-                        <div class="metrics-container">
-                            <div class="metric-card">
-                                <span class="value">5,000</span>
-                                <span class="label">Episodios Entrenados</span>
-                            </div>
-                            <div class="metric-card">
-                                <span class="value">30.78</span>
-                                <span class="label">Promedio Recompensa (Últimos 100)</span>
-                            </div>
-                            <div class="metric-card">
-                                <span class="value">320,000</span>
-                                <span class="label">Estados Discretizados</span>
-                            </div>
-                            <div class="metric-card">
-                                <span class="value">100%</span>
-                                <span class="label">Estabilidad en Inferencia</span>
-                            </div>
+                    <div class="metrics-container">
+                        <div class="metric-card">
+                            <span class="value">5,000</span>
+                            <span class="label">Episodios Entrenados</span>
                         </div>
-                        
-                        <p>Al exportar la Q-Table, se separó la fase de entrenamiento de la fase de inferencia (evaluación), lo que permitió incrustar el "cerebro" del agente en la nube de Streamlit.</p>
-
-                        <a href="https://aprendizajeporrefuerzo.streamlit.app/" target="_blank" class="qr-placeholder">
-                            <span class="material-symbols-rounded" style="font-size: 3rem;">travel_explore</span>
-                            Clic aquí para abrir la Demo Interactiva Web
-                        </a>
+                        <div class="metric-card">
+                            <span class="value">30.78</span>
+                            <span class="label">Prom. Recompensa (Últimos 100)</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="value">320,000</span>
+                            <span class="label">Estados Discretizados</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="value">100%</span>
+                            <span class="label">Estabilidad Inferencia</span>
+                        </div>
                     </div>
 
-                    <div class="box content-box">
-                        <h3><span class="material-symbols-rounded">fact_check</span> Conclusiones</h3>
-                        <ol>
-                            <li>El Q-Learning tabular es altamente funcional para problemas de control clásico, pero es extremadamente sensible a los parámetros de discretización.</li>
-                            <li>Se evidenció la "maldición de la dimensionalidad": con solo 20 divisiones por variable de estado, el tamaño de la matriz explotó a miles de posibles permutaciones.</li>
-                        </ol>
-                    </div>
+                    <a href="https://aprendizajeporrefuerzo.streamlit.app/" target="_blank" class="qr-placeholder">
+                        <span class="material-symbols-rounded" style="font-size: 3rem;">travel_explore</span>
+                        Clic aquí — Demo Interactiva Q-Learning
+                    </a>
                 </div>
 
+                <div class="box content-box">
+                    <h3><span class="material-symbols-rounded">fact_check</span> Conclusiones Q-Learning</h3>
+                    <ol>
+                        <li>Q-Learning tabular es altamente funcional para control clásico, pero sensible a parámetros de discretización.</li>
+                        <li>Se evidenció la <em>"maldición de la dimensionalidad"</em>: con solo 20 divisiones por variable el espacio de estados explotó a miles de permutaciones.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════════ SEPARADOR DQN ══════════════════ -->
+        <div class="section-divider">
+            <div class="section-divider-label dqn">
+                <span class="material-symbols-rounded" style="vertical-align:-5px; margin-right:6px;">neurology</span>
+                Algoritmo 2: Deep Q-Network (DQN)
+            </div>
+        </div>
+
+        <!-- ══════════════════ BANNER DQN ══════════════════ -->
+        <div class="algo-header dqn box">
+            <span class="material-symbols-rounded" style="font-size:3rem; color:var(--accent-dqn);">hub</span>
+            <div>
+                <h2>Deep Q-Network (DQN)</h2>
+                <p>Entorno: <strong>CartPole-v1</strong> · Red neuronal para aproximar la función Q</p>
+            </div>
+            <div>
+                <span class="algo-badge badge-dqn">Off-Policy · Value-Based · Deep RL</span>
+            </div>
+        </div>
+
+        <!-- ══════════════════ CUERPO DQN ══════════════════ -->
+        <div class="body-row">
+            <div class="col">
+                <div class="box content-box dqn">
+                    <h3><span class="material-symbols-rounded">schema</span> Arquitectura de la Red</h3>
+                    <p>DQN reemplaza la Q-Table por una <strong>red neuronal profunda</strong> que recibe el estado continuo y estima el valor Q de cada acción, eliminando la necesidad de discretizar el espacio de estados.</p>
+                    <div class="arch-diagram">
+                        <div class="arch-node input">Estado<br><small>4 entradas</small></div>
+                        <div class="arch-arrow">→</div>
+                        <div class="arch-node hidden">FC-64<br><small>ReLU</small></div>
+                        <div class="arch-arrow">→</div>
+                        <div class="arch-node hidden">FC-64<br><small>ReLU</small></div>
+                        <div class="arch-arrow">→</div>
+                        <div class="arch-node output">Q(s,a)<br><small>2 salidas</small></div>
+                    </div>
+                    <p>Se usa una <strong>Red Objetivo</strong> (Target Network) separada que se actualiza periódicamente para estabilizar el entrenamiento, evitando el problema de objetivos móviles.</p>
+                </div>
+
+                <div class="box content-box dqn">
+                    <h3><span class="material-symbols-rounded">memory</span> Replay Buffer</h3>
+                    <p>Las experiencias <code>(s, a, r, s', done)</code> se almacenan en un buffer de capacidad <strong>10,000</strong>. En cada paso se extrae un mini-batch aleatorio de tamaño 64, rompiendo la correlación temporal y estabilizando el gradiente.</p>
+                    <div class="hparam-row">
+                        <div class="hparam dqn">Buffer <span>10,000</span></div>
+                        <div class="hparam dqn">Batch <span>64</span></div>
+                        <div class="hparam dqn">α (lr) <span>0.001</span></div>
+                        <div class="hparam dqn">γ <span>0.99</span></div>
+                        <div class="hparam dqn">ε-decay <span>0.995</span></div>
+                        <div class="hparam dqn">Episodios <span>150</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="box content-box dqn">
+                    <h3><span class="material-symbols-rounded">functions</span> Función de Pérdida y Actualización</h3>
+                    <p>La red se entrena minimizando el error cuadrático medio entre el valor Q actual y el objetivo de Bellman calculado con la red objetivo:</p>
+                    <div class="formula-box dqn">Loss = MSE(Q(s,a), r + γ · max Q_target(s', a'))</div>
+                    <p>El optimizador <strong>Adam</strong> ajusta los pesos de la red principal, mientras la red objetivo recibe copias periódicas de esos pesos al final de cada episodio.</p>
+                </div>
+
+                <div class="box content-box dqn results-box">
+                    <h3><span class="material-symbols-rounded">monitoring</span> Resultados DQN</h3>
+                    <p>El agente DQN muestra <strong>convergencia más rápida y robusta</strong> que el Q-Learning tabular al no requerir discretización, trabajando directamente con el espacio continuo de 4 dimensiones.</p>
+                    <div class="metrics-container">
+                        <div class="metric-card dqn">
+                            <span class="value">150</span>
+                            <span class="label">Episodios de Entrenamiento</span>
+                        </div>
+                        <div class="metric-card dqn">
+                            <span class="value">64-64</span>
+                            <span class="label">Capas Ocultas (neuronas)</span>
+                        </div>
+                        <div class="metric-card dqn">
+                            <span class="value">10K</span>
+                            <span class="label">Capacidad Replay Buffer</span>
+                        </div>
+                        <div class="metric-card dqn">
+                            <span class="value">PyTorch</span>
+                            <span class="label">Framework Deep Learning</span>
+                        </div>
+                    </div>
+                    <p>El modelo entrenado se serializa con <code>torch.save()</code> y se carga en Streamlit para inferencia sin re-entrenamiento en la nube.</p>
+                    <a href="https://aprendizajeqpn.streamlit.app/#dqn-agent-cart-pole-demo" target="_blank" class="qr-placeholder" style="background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border-color: #c4b5fd; color: var(--accent-dqn);">
+                        <span class="material-symbols-rounded" style="font-size: 3rem;">travel_explore</span>
+                        Clic aquí — Demo Interactiva DQN
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════════ SEPARADOR SARSA ══════════════════ -->
+        <div class="section-divider">
+            <div class="section-divider-label sarsa">
+                <span class="material-symbols-rounded" style="vertical-align:-5px; margin-right:6px;">route</span>
+                Algoritmo 3: SARSA (State-Action-Reward-State-Action)
+            </div>
+        </div>
+
+        <!-- ══════════════════ BANNER SARSA ══════════════════ -->
+        <div class="algo-header sarsa box">
+            <span class="material-symbols-rounded" style="font-size:3rem; color:var(--accent-sarsa);">grid_on</span>
+            <div>
+                <h2>SARSA Tabular</h2>
+                <p>Entorno: <strong>FrozenLake-v1</strong> · Control On-Policy con tabla Q discreta</p>
+            </div>
+            <div>
+                <span class="algo-badge badge-sarsa">On-Policy · Value-Based · Tabular</span>
+            </div>
+        </div>
+
+        <!-- ══════════════════ CUERPO SARSA ══════════════════ -->
+        <div class="body-row">
+            <div class="col">
+                <div class="box content-box sarsa">
+                    <h3><span class="material-symbols-rounded">article</span> Entorno FrozenLake-v1</h3>
+                    <p>El agente debe moverse desde el inicio (S) hasta el objetivo (G) en un lago congelado de 4×4 celdas, evitando los agujeros (H). Se usa <code>is_slippery=True</code> para añadir aleatoriedad: el agente no siempre se mueve en la dirección deseada.</p>
+                    <ul>
+                        <li><strong>Estados:</strong> 16 celdas discretas (espacio tabular ideal)</li>
+                        <li><strong>Acciones:</strong> 4 (izquierda, derecha, arriba, abajo)</li>
+                        <li><strong>Recompensa:</strong> +1 al llegar al objetivo, 0 en el resto</li>
+                    </ul>
+                </div>
+
+                <div class="box content-box sarsa">
+                    <h3><span class="material-symbols-rounded">functions</span> Regla de Actualización SARSA</h3>
+                    <p>La diferencia clave frente a Q-Learning: SARSA usa la <strong>acción real A'</strong> elegida en S' (con la misma política ε-greedy), no el máximo teórico:</p>
+                    <div class="formula-box sarsa">Q(S,A) = Q(S,A) + α · [R + γ · Q(S',A') − Q(S,A)]</div>
+                    <p>Esto lo hace <em>más conservador</em> que Q-Learning: su política aprendida refleja el comportamiento real del agente incluyendo la exploración.</p>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="box content-box sarsa">
+                    <h3><span class="material-symbols-rounded">tune</span> Hiperparámetros y Configuración</h3>
+                    <div class="hparam-row">
+                        <div class="hparam sarsa">α <span>0.1</span></div>
+                        <div class="hparam sarsa">γ <span>0.99</span></div>
+                        <div class="hparam sarsa">ε inicial <span>1.0</span></div>
+                        <div class="hparam sarsa">ε mín. <span>0.01</span></div>
+                        <div class="hparam sarsa">ε-decay <span>0.001</span></div>
+                        <div class="hparam sarsa">Episodios <span>5,000</span></div>
+                        <div class="hparam sarsa">Máx. pasos <span>100</span></div>
+                    </div>
+                    <p style="margin-top:0.8rem;">El decaimiento <em>lineal</em> de ε (a diferencia del multiplicativo en Q-Learning y DQN) provoca una reducción más predecible de la exploración a lo largo del entrenamiento.</p>
+                </div>
+
+                <div class="box content-box sarsa results-box">
+                    <h3><span class="material-symbols-rounded">monitoring</span> Resultados SARSA</h3>
+                    <p>SARSA converge en FrozenLake con tendencia ascendente en la recompensa promedio. El análisis de convergencia incluye curva suavizada con ventana móvil de 100 episodios para filtrar el ruido estocástico del entorno resbaladizo.</p>
+                    <div class="metrics-container">
+                        <div class="metric-card sarsa">
+                            <span class="value">5,000</span>
+                            <span class="label">Episodios de Entrenamiento</span>
+                        </div>
+                        <div class="metric-card sarsa">
+                            <span class="value">16 × 4</span>
+                            <span class="label">Dimensión Tabla Q</span>
+                        </div>
+                        <div class="metric-card sarsa">
+                            <span class="value">100</span>
+                            <span class="label">Ventana Promedio Móvil</span>
+                        </div>
+                        <div class="metric-card sarsa">
+                            <span class="value">Streamlit</span>
+                            <span class="label">Despliegue Interactivo</span>
+                        </div>
+                    </div>
+                    <p>La app Streamlit de SARSA expone sliders para ajustar todos los hiperparámetros en tiempo real, permitiendo observar cómo cambia la curva de aprendizaje.</p>
+                    <a href="https://aprendizajerefuerzo.streamlit.app/" target="_blank" class="qr-placeholder" style="background: linear-gradient(135deg, #f0fdf4 0%, #d1fae5 100%); border-color: #6ee7b7; color: var(--accent-sarsa);">
+                        <span class="material-symbols-rounded" style="font-size: 3rem;">travel_explore</span>
+                        Clic aquí — Demo Interactiva SARSA
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════════ TABLA COMPARATIVA ══════════════════ -->
+        <div class="box content-box">
+            <h3><span class="material-symbols-rounded">compare_arrows</span> Comparativa de los Tres Algoritmos</h3>
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th class="col-ql">Q-Learning</th>
+                        <th class="col-dqn">DQN</th>
+                        <th class="col-sarsa">SARSA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Tipo de política</td>
+                        <td><span class="tag-chip chip-blue">Off-Policy</span></td>
+                        <td><span class="tag-chip chip-purple">Off-Policy</span></td>
+                        <td><span class="tag-chip chip-green">On-Policy</span></td>
+                    </tr>
+                    <tr>
+                        <td>Representación Q</td>
+                        <td>Tabla discreta (discretización manual)</td>
+                        <td>Red neuronal profunda (FC 64-64)</td>
+                        <td>Tabla discreta (estados nativos)</td>
+                    </tr>
+                    <tr>
+                        <td>Entorno</td>
+                        <td>CartPole-v1</td>
+                        <td>CartPole-v1</td>
+                        <td>FrozenLake-v1</td>
+                    </tr>
+                    <tr>
+                        <td>Espacio de estados</td>
+                        <td>Continuo → Discretizado</td>
+                        <td>Continuo (directo)</td>
+                        <td>Discreto nativo (16)</td>
+                    </tr>
+                    <tr>
+                        <td>Episodios entrenamiento</td>
+                        <td>5,000</td>
+                        <td>150</td>
+                        <td>5,000</td>
+                    </tr>
+                    <tr>
+                        <td>Actualización Q</td>
+                        <td>max Q(s', a') — greedy</td>
+                        <td>Target Network + Replay Buffer</td>
+                        <td>Q(s', a') — acción real</td>
+                    </tr>
+                    <tr>
+                        <td>Escalabilidad</td>
+                        <td>Baja (maldición dimensionalidad)</td>
+                        <td>Alta (generalización)</td>
+                        <td>Media (estados discretos nativos)</td>
+                    </tr>
+                    <tr>
+                        <td>Framework</td>
+                        <td>NumPy</td>
+                        <td>PyTorch + Adam</td>
+                        <td>NumPy</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ══════════════════ CONCLUSIONES GENERALES ══════════════════ -->
+        <div class="box content-box">
+            <h3><span class="material-symbols-rounded">lightbulb</span> Conclusiones Generales</h3>
+            <div class="body-row" style="gap: 1.5rem; margin-top: 0.5rem;">
+                <div style="flex:1;">
+                    <ol style="padding-left:1.5rem; font-size:1.05rem; line-height:1.8; color:var(--text-muted);">
+                        <li><strong>Q-Learning tabular</strong> es funcional pero limitado por la discretización. Con 20 bins por variable el tamaño del espacio explotó, evidenciando la maldición de la dimensionalidad.</li>
+                        <li><strong>DQN</strong> supera esta limitación al generalizar mediante una red neuronal. Converge en solo 150 episodios sobre el mismo entorno, lo que demuestra el poder de la aproximación funcional.</li>
+                    </ol>
+                </div>
+                <div style="flex:1;">
+                    <ol start="3" style="padding-left:1.5rem; font-size:1.05rem; line-height:1.8; color:var(--text-muted);">
+                        <li><strong>SARSA On-Policy</strong> es ideal para FrozenLake por su espacio discreto nativo. Su carácter conservador (aprende con la política real) lo hace más seguro en entornos estocásticos como <code>is_slippery=True</code>.</li>
+                        <li>El despliegue en <strong>Streamlit</strong> en los tres casos demostró que la separación entrenamiento-inferencia es viable para aplicaciones web interactivas de RL.</li>
+                    </ol>
+                </div>
             </div>
         </div>
 
     </div>
+</div>
 
 </body>
 </html>
