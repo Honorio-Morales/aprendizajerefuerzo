@@ -1,136 +1,137 @@
 import streamlit as st
 import gymnasium as gym
 import numpy as np
-import time
-import os
+import matplotlib.pyplot as plt
+import random
 
-st.set_page_config(
-    page_title="CartPole Q-Learning",
-    page_icon=":material/smart_toy:",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
+st.set_page_config(layout="wide", page_title="Algoritmo SARSA en FrozenLake")
 
-# Estilo CSS adicional para mejorar la apariencia del visualizador
-st.markdown("""
-<style>
-    .stImage > img {
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-</style>
-""", unsafe_allow_html=True)
+st.title("Implementación del Algoritmo SARSA en FrozenLake-v1")
+st.markdown("Una aplicación interactiva para explorar el algoritmo SARSA en el entorno `FrozenLake-v1` de Gymnasium.")
 
-st.title(":material/smart_toy: CartPole-v1: Agente Q-Learning")
-st.markdown("Observa cómo un agente de Inteligencia Artificial equilibra un poste en un carro en movimiento, tomando decisiones basadas en su tabla de aprendizaje.")
+# --- Hiperparámetros configurables --- #
+st.sidebar.header("Configuración de Hiperparámetros")
 
-st.sidebar.header(":material/settings: Configuración", divider="blue")
+alpha = st.sidebar.slider("Tasa de Aprendizaje (alpha)", 0.01, 1.0, 0.1, 0.01)
+gamma = st.sidebar.slider("Factor de Descuento (gamma)", 0.01, 0.99, 0.99, 0.01)
+epsilon_inicial = st.sidebar.slider("Épsilon Inicial (exploración)", 0.0, 1.0, 1.0, 0.01)
+epsilon_min = st.sidebar.slider("Épsilon Mínimo", 0.0, 0.1, 0.01, 0.001)
+epsilon_decay = st.sidebar.slider("Tasa de Decaimiento de Épsilon", 0.0001, 0.01, 0.001, 0.0001)
+num_episodios = st.sidebar.slider("Número de Episodios", 100, 10000, 5000, 100)
+max_pasos_por_episodio = st.sidebar.slider("Máx. Pasos por Episodio", 50, 500, 100, 10)
 
-# Intentar cargar la Q-Table entrenada
-q_table = None
-if os.path.exists('q_table.npy'):
-    q_table = np.load('q_table.npy')
-    st.sidebar.success("Modelo cargado. El agente utilizará su política aprendida.", icon=":material/memory:")
+# --- Funciones SARSA --- #
+
+def elegir_accion_epsilon_greedy(estado, tabla_q, epsilon, num_acciones):
+    if random.uniform(0, 1) < epsilon:
+        return random.randint(0, num_acciones - 1) # Acción aleatoria
+    else:
+        return np.argmax(tabla_q[estado, :]) # Mejor acción
+
+
+@st.cache_resource # Cachea el entorno para evitar reinicializaciones costosas
+def obtener_entorno():
+    return gym.make('FrozenLake-v1', is_slippery=True)
+
+
+def entrenar_sarsa(
+    alpha,
+    gamma,
+    epsilon_inicial,
+    epsilon_min,
+    epsilon_decay,
+    num_episodios,
+    max_pasos_por_episodio,
+):
+    entorno = obtener_entorno()
+    num_estados = entorno.observation_space.n
+    num_acciones = entorno.action_space.n
+    tabla_q = np.zeros((num_estados, num_acciones))
+    recompensas_por_episodio = []
+    epsilon = epsilon_inicial
+
+    progreso_bar = st.progress(0, text="Entrenando SARSA...")
+
+    for episodio in range(num_episodios):
+        estado_actual, info = entorno.reset()
+        terminado = False
+        truncado = False
+        recompensa_acumulada = 0
+        pasos_en_episodio = 0
+
+        accion_actual = elegir_accion_epsilon_greedy(estado_actual, tabla_q, epsilon, num_acciones)
+
+        while not terminado and not truncado and pasos_en_episodio < max_pasos_por_episodio:
+            siguiente_estado, recompensa, terminado, truncado, info = entorno.step(accion_actual)
+            recompensa_acumulada += recompensa
+
+            accion_siguiente = elegir_accion_epsilon_greedy(siguiente_estado, tabla_q, epsilon, num_acciones)
+
+            antiguo_q = tabla_q[estado_actual, accion_actual]
+            siguiente_q_valor = tabla_q[siguiente_estado, accion_siguiente]
+
+            nuevo_q_valor = antiguo_q + alpha * (recompensa + gamma * siguiente_q_valor - antiguo_q)
+            tabla_q[estado_actual, accion_actual] = nuevo_q_valor
+
+            estado_actual = siguiente_estado
+            accion_actual = accion_siguiente
+            pasos_en_episodio += 1
+
+        epsilon = max(epsilon_min, epsilon - epsilon_decay)
+        recompensas_por_episodio.append(recompensa_acumulada)
+        progreso_bar.progress((episodio + 1) / num_episodios, text=f"Episodio {episodio + 1}/{num_episodios}")
+
+    entorno.close()
+    progreso_bar.empty()
+    return tabla_q, recompensas_por_episodio
+
+# --- Botón para iniciar el entrenamiento --- #
+if st.sidebar.button("Iniciar Entrenamiento SARSA"):
+    st.subheader("Resultados del Entrenamiento")
+    tabla_q_final, recompensas = entrenar_sarsa(
+        alpha,
+        gamma,
+        epsilon_inicial,
+        epsilon_min,
+        epsilon_decay,
+        num_episodios,
+        max_pasos_por_episodio,
+    )
+
+    st.success("¡Entrenamiento SARSA completado!")
+
+    st.markdown("### Tabla Q Final (primeras filas)")
+    st.dataframe(tabla_q_final[:5, :]) # Mostrar solo las primeras 5 filas para evitar saturación
+
+    st.markdown("### Gráfica de Recompensa Acumulada por Episodio")
+    fig1, ax1 = plt.subplots(figsize=(12, 6))
+    ax1.plot(recompensas)
+    ax1.set_title('Recompensa Acumulada por Episodio durante el Entrenamiento SARSA')
+    ax1.set_xlabel('Episodio')
+    ax1.set_ylabel('Recompensa Acumulada')
+    ax1.grid(True)
+    st.pyplot(fig1)
+
+    st.markdown("### Gráfica de Recompensa Promedio Móvil")
+    ventana = 100
+    recompensa_suavizada = np.convolve(recompensas, np.ones(ventana)/ventana, mode='valid')
+    fig2, ax2 = plt.subplots(figsize=(12, 6))
+    ax2.plot(recompensa_suavizada)
+    ax2.set_title(f'Recompensa Promedio Móvil (Ventana {ventana}) durante el Entrenamiento SARSA')
+    ax2.set_xlabel('Episodio (suavizado)')
+    ax2.set_ylabel('Recompensa Promedio')
+    ax2.grid(True)
+    st.pyplot(fig2)
+
+    st.markdown("### Análisis de la Convergencia")
+    st.markdown("**Interpretación del Aprendizaje (Curva ascendente y estabilización):**")
+    st.markdown("Si la curva de recompensa promedio móvil muestra una **tendencia ascendente** y luego **se estabiliza** en un valor alto, indica que el agente está aprendiendo y convergiendo a una política efectiva. Esto significa que está encontrando rutas para alcanzar el objetivo (G) y evitar los agujeros (H).")
+    st.markdown("**Inestabilidad o Estancamiento y relación con Hiperparámetros:**")
+    st.markdown("Si las curvas son muy fluctuantes (inestabilidad) o se mantienen bajas (estancamiento), es posible que los hiperparámetros (alpha, gamma, epsilon) necesiten ajustarse. Una `alpha` muy alta puede causar inestabilidad, mientras que una `epsilon` insuficiente puede llevar a un estancamiento en un óptimo local.")
+
 else:
-    st.sidebar.warning("No se encontró 'q_table.npy'. El agente usará acciones aleatorias.", icon=":material/warning:")
+    st.info("Ajusta los hiperparámetros en la barra lateral izquierda y haz clic en 'Iniciar Entrenamiento SARSA' para comenzar.")
 
-sim_speed = st.sidebar.slider("Velocidad de simulación (FPS)", min_value=10, max_value=60, value=30, step=5)
-delay = 1.0 / sim_speed
-
-st.sidebar.markdown("---")
-st.sidebar.markdown("""
-**¿Cómo funciona?**
-El agente observa 4 variables del entorno en tiempo real:
-1. Posición del carro
-2. Velocidad del carro
-3. Ángulo del poste
-4. Velocidad angular
-
-En cada fracción de segundo, consulta su **Q-Table** para decidir la mejor acción: empujar a la **Izquierda** o a la **Derecha**.
-""")
-
-# Parámetros para la discretización
-BINS = 20
-os_low = [-4.8, -2.0, -0.418, -3.5]
-os_high = [4.8, 2.0, 0.418, 3.5]
-
-def discretize_state(state):
-    ratios = [(state[i] - os_low[i]) / (os_high[i] - os_low[i]) for i in range(len(state))]
-    new_state = [int(round((BINS - 1) * ratios[i])) for i in range(len(state))]
-    new_state = [min(BINS - 1, max(0, x)) for x in new_state]
-    return tuple(new_state)
-
-col_main, col_side = st.columns([2, 1], gap="large")
-
-with col_side:
-    with st.container(border=True):
-        st.subheader(":material/sports_esports: Control")
-        start_btn = st.button("Iniciar Simulación", type="primary", use_container_width=True, icon=":material/play_arrow:")
-        
-    with st.container(border=True):
-        st.subheader(":material/monitoring: Telemetría en Vivo")
-        col_m1, col_m2 = st.columns(2)
-        metric_reward = col_m1.empty()
-        metric_action = col_m2.empty()
-        metric_angle = col_m1.empty()
-        metric_pos = col_m2.empty()
-        
-        metric_reward.metric("Recompensa", "0")
-        metric_action.metric("Acción", "-")
-        metric_angle.metric("Ángulo", "0.0°")
-        metric_pos.metric("Posición", "0.0")
-        
-        st.divider()
-        status_placeholder = st.empty()
-        status_placeholder.info("Esperando inicio...", icon=":material/hourglass_empty:")
-
-with col_main:
-    with st.container(border=True):
-        st.subheader(":material/desktop_windows: Visualizador del Entorno")
-        img_placeholder = st.empty()
-        
-        if not start_btn:
-            try:
-                env = gym.make('CartPole-v1', render_mode='rgb_array')
-                env.reset()
-                img_placeholder.image(env.render(), use_container_width=True)
-                env.close()
-            except:
-                pass
-
-if start_btn:
-    env = gym.make('CartPole-v1', render_mode='rgb_array')
-    state_cont, _ = env.reset()
-    done = False
-    total_reward = 0
-    
-    status_placeholder.info("Simulando entorno...", icon=":material/sync:")
-    
-    while not done:
-        if q_table is not None:
-            state_idx = discretize_state(state_cont)
-            action = int(np.argmax(q_table[state_idx]))
-        else:
-            action = env.action_space.sample()
-            
-        action_text = "➡️ Derecha" if action == 1 else "⬅️ Izquierda"
-            
-        state_cont, reward, terminated, truncated, _ = env.step(action)
-        done = terminated or truncated
-        total_reward += reward
-        
-        # Actualizar métricas
-        angle_deg = state_cont[2] * (180.0 / np.pi)
-        
-        metric_reward.metric("Recompensa", f"{total_reward:.0f}")
-        metric_action.metric("Acción", action_text)
-        metric_angle.metric("Ángulo", f"{angle_deg:.1f}°")
-        metric_pos.metric("Posición", f"{state_cont[0]:.2f}")
-        
-        img = env.render()
-        img_placeholder.image(img, use_container_width=True)
-        
-        time.sleep(delay)
-        
-    status_placeholder.success("¡Episodio finalizado!", icon=":material/flag:")
-    env.close()
+st.markdown("--- ")
+st.markdown("**Nota sobre el Entorno FrozenLake-v1:**")
+st.markdown("El entorno `FrozenLake-v1` (`is_slippery=True`) simula un suelo congelado donde el agente debe navegar desde el inicio (S) hasta el objetivo (G). Las casillas 'F' son seguras, 'H' son agujeros. La propiedad `is_slippery=True` introduce aleatoriedad: la acción deseada solo ocurre con una probabilidad, y en otras ocasiones el agente se desliza a una casilla adyacente aleatoria. Esto hace que el problema sea más desafiante y requiere que el agente aprenda una política robusta.")

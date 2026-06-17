@@ -2,5 +2,3 @@ gymnasium
 numpy
 matplotlib
 streamlit
-pandas
-pygame
